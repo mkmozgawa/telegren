@@ -1,3 +1,6 @@
-*.txt
+keyword.txt
+reply.txt
+token.txt
+offset.txt
 venv/
 .vscode/
