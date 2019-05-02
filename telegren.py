@@ -28,7 +28,7 @@ while True:
 
         for update in updates:
             message = update.message.text
-            if KEYWORD in message.lower():
+            if message is not None and KEYWORD in message.lower():
                 bot.send_message(chat_id=chat_id, text=REPLY)
                 break
 
@@ -36,5 +36,4 @@ while True:
             o.write(str(OFFSET))
         
     time.sleep(1)
-
     
