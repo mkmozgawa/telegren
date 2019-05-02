@@ -20,4 +20,6 @@ A Telegram chatbot that detects a keyword in a conversation and responds with a 
 
 ## todos
 - Add a response counter to see how many times it hit you with its blunt bot force.
+- Reply directly to the message that triggered the response.
+- In the reply message point out to the word that tiggered the response.
 - Add responding in any conversation as long as it's needed there. The truth cannot be silenced! XD
