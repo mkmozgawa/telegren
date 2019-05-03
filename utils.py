@@ -38,10 +38,8 @@ def process_updates(updates, bot, KEYWORD, REPLY, OFFSET):
     ''' Process the updates. '''
     for update in updates:
         try:
-            message = update.message.text
-            if message is not None and KEYWORD in message.lower():
-                chat_id = update.message.chat_id
-                bot.send_message(chat_id=chat_id, text=REPLY)
+            if KEYWORD in update.message.text.lower():
+                update.message.reply_text(text=REPLY, quote=True)
         except AttributeError: # raised when it can't process a message (sticker, image, etc)
             continue
 
