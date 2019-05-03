@@ -27,10 +27,13 @@ while True:
         OFFSET = updates[-1].update_id + 1
 
         for update in updates:
-            message = update.message.text
-            if message is not None and KEYWORD in message.lower():
-                bot.send_message(chat_id=chat_id, text=REPLY)
-                break
+            try:
+                message = update.message.text
+                if message is not None and KEYWORD in message.lower():
+                    bot.send_message(chat_id=chat_id, text=REPLY)
+                    break
+            except AttributeError:
+                continue
 
         with open('offset.txt', 'w') as o:
             o.write(str(OFFSET))
