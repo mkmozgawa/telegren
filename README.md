@@ -14,12 +14,5 @@ A Telegram chatbot that detects a keyword in a conversation and responds with a 
 ## local run
 `python telegren.py`
 
-## known issues
-- Using stickers in the conversation causes a parse error. This is mitigated by checking if `update.message.text` is not `None` but this should be handled more clearly.
-- It only responds in the conversation with the most recent keyword use.
-
-## todos
-- Add a response counter to see how many times it hit you with its blunt bot force.
-- Reply directly to the message that triggered the response.
-- In the reply message point out to the word that tiggered the response.
-- Add responding in any conversation as long as it's needed there. The truth cannot be silenced! XD
+## known issues & todos
+Please refer to the [issues list](https://github.com/mkmozgawa/telegren/issues).
