@@ -4,3 +4,4 @@ token.txt
 offset.txt
 venv/
 .vscode/
+__pycache__/

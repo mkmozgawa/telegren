@@ -2,19 +2,14 @@ import telegram
 import json
 import time
 
+from setup import create_file, read_file, TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
+
 def run_bot():
 
-    with open('token.txt', 'r') as t:
-        TOKEN = t.read().strip()
-
-    with open('reply.txt', 'r') as r:
-        REPLY = r.read().strip()
-
-    with open('keyword.txt', 'r') as k:
-        KEYWORD = k.read().strip()
-
-    with open('offset.txt', 'r') as o:
-        OFFSET = int(o.read().strip())
+    TOKEN = read_file(TOKEN_FILE)
+    KEYWORD = read_file(KEYWORD_FILE)
+    REPLY = read_file(REPLY_FILE)
+    OFFSET = read_file(OFFSET_FILE)
 
     bot = telegram.Bot(token=TOKEN)
 
@@ -37,8 +32,7 @@ def run_bot():
                 except AttributeError:
                     continue
 
-            with open('offset.txt', 'w') as o:
-                o.write(str(OFFSET))
+            create_file(OFFSET_FILE, OFFSET)
         
         time.sleep(1)
 
