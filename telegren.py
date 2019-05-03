@@ -19,8 +19,8 @@ def run_bot():
             process_updates(updates, bot, KEYWORD, REPLY)
             OFFSET = get_offset(updates)
             create_file(OFFSET_FILE, OFFSET)
-        
-        time.sleep(1)
+        else:
+            time.sleep(1)
 
 if __name__ == "__main__":
     run_bot()
