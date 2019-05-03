@@ -34,14 +34,15 @@ def fetch_updates(bot, offset):
     except telegram.error.TimedOut:
         return None
 
-def process_updates(updates, bot, KEYWORD, REPLY, OFFSET):
+def respond_to_message(update, reply):
+    update.message.reply_text(text=reply, quote=True)
+
+def process_updates(updates, bot, KEYWORD, REPLY):
     ''' Process the updates. '''
     for update in updates:
         try:
-            message = update.message.text
-            if message is not None and KEYWORD in message.lower():
-                chat_id = update.message.chat_id
-                bot.send_message(chat_id=chat_id, text=REPLY)
+            if KEYWORD in update.message.text.lower():
+                respond_to_message(update, REPLY)
         except AttributeError: # raised when it can't process a message (sticker, image, etc)
             continue
 
