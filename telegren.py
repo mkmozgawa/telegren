@@ -1,28 +1,8 @@
 import telegram
-import json
 import time
-import sys
 
-from setup import create_file, read_file, TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
-
-def create_bot(token):
-    ''' Return a bot instance. '''
-    try:
-        return telegram.Bot(token=token)
-    except telegram.error.InvalidToken:
-        print("Invalid token. I know you've tried your best, though.")
-        sys.exit(1)
-
-def fetch_updates(bot, offset):
-    ''' Return the newest updates (based off the offset value) if possible. If there are new updates return None. '''
-    try:
-        updates = bot.get_updates(offset=offset)
-        if len(updates) > 0:
-            return updates
-        else:
-            return None
-    except telegram.error.TimedOut:
-        return None
+from setup import TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
+from utils import create_file, read_file, create_bot, fetch_updates, process_updates, get_offset
 
 def run_bot():
 
@@ -36,18 +16,8 @@ def run_bot():
     while True:
         updates = fetch_updates(bot, OFFSET)
         if updates is not None:
-            chat_id = updates[-1].message.chat_id
-            OFFSET = updates[-1].update_id + 1
-
-            for update in updates:
-                try:
-                    message = update.message.text
-                    if message is not None and KEYWORD in message.lower():
-                        bot.send_message(chat_id=chat_id, text=REPLY)
-                        break
-                except AttributeError:
-                    continue
-
+            process_updates(updates, bot, KEYWORD, REPLY, OFFSET)
+            OFFSET = get_offset(updates)
             create_file(OFFSET_FILE, OFFSET)
         
         time.sleep(1)

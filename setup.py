@@ -1,22 +1,12 @@
+from utils import create_file
+
 TOKEN_FILE = "token.txt"
 KEYWORD_FILE = "keyword.txt"
 REPLY_FILE = "reply.txt"
 OFFSET_FILE = "offset.txt"
 OFFSET_VALUE_INITIAL = "0"
 
-''' This file contains the setup script along with some helper functions. '''
-
-def create_file(filename, value):
-    with open(filename, 'w') as f:
-        try:
-            f.write(value)
-        except TypeError:
-            f.write(str(value))
-
-def read_file(filename):
-    with open(filename, 'r') as f:
-        content = f.read().strip()
-    return content
+''' This file contains the setup script'''
 
 def setup_bot():
     print("Setup time! Please don't lie to me, I'd know.")
@@ -33,3 +23,4 @@ def setup_bot():
 
 if __name__ == "__main__":
     setup_bot()
+
