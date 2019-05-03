@@ -16,7 +16,7 @@ def run_bot():
     while True:
         updates = fetch_updates(bot, OFFSET)
         if updates is not None:
-            process_updates(updates, bot, KEYWORD, REPLY, OFFSET)
+            process_updates(updates, bot, KEYWORD, REPLY)
             OFFSET = get_offset(updates)
             create_file(OFFSET_FILE, OFFSET)
         
