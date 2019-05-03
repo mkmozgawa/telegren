@@ -2,7 +2,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.7.3
+      - image: magdaspace/telegren-telegren-0.0.1
+      auth:
+        username: magdaspace
+        password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - run: echo $KEYWORD
