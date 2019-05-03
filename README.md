@@ -4,7 +4,9 @@ A Telegram chatbot that detects a keyword in a conversation and responds with a 
 
 ## requirements
 - A Telegram bot TOKEN. Get yours from [The BotFather](https://telegram.me/botfather).
-- Add your token to `token.txt`, keyword to watch out for to `keyword.txt`, reply phrase to `reply.txt` and set `offset.txt` to 0 (it will get updated after the first run).
+
+## first run
+Run `python setup.py` and answer the questions truthfully, please. The bar is so low, it's basically in the basement, and yet some people manage to trip over it.
 
 ## local development
 `virtualenv venv`
