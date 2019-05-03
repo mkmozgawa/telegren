@@ -1,8 +1,8 @@
 import telegram
-import json
 import time
 
-from setup import create_file, read_file, TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
+from setup import TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
+from utils import create_file, read_file, create_bot, fetch_updates, process_updates, get_offset
 
 def run_bot():
 
@@ -11,27 +11,13 @@ def run_bot():
     REPLY = read_file(REPLY_FILE)
     OFFSET = read_file(OFFSET_FILE)
 
-    bot = telegram.Bot(token=TOKEN)
+    bot = create_bot(TOKEN)
 
     while True:
-        try:
-            updates = bot.get_updates(offset=OFFSET)
-        except telegram.error.TimedOut:
-            continue
-
-        if len(updates) > 0:
-            chat_id = updates[-1].message.chat_id
-            OFFSET = updates[-1].update_id + 1
-
-            for update in updates:
-                try:
-                    message = update.message.text
-                    if message is not None and KEYWORD in message.lower():
-                        bot.send_message(chat_id=chat_id, text=REPLY)
-                        break
-                except AttributeError:
-                    continue
-
+        updates = fetch_updates(bot, OFFSET)
+        if updates is not None:
+            process_updates(updates, bot, KEYWORD, REPLY, OFFSET)
+            OFFSET = get_offset(updates)
             create_file(OFFSET_FILE, OFFSET)
         
         time.sleep(1)
