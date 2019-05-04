@@ -1,8 +1,7 @@
 import telegram
-import time
 
 from setup import TOKEN_FILE, KEYWORD_FILE, REPLY_FILE, OFFSET_FILE
-from utils import create_file, read_file, create_bot, fetch_updates, process_updates, get_offset
+from utils import create_file, read_file, create_bot, fetch_updates, process_updates, get_offset, wait, UPDATE_PERIOD, COOLOFF_PERIOD
 
 def run_bot():
 
@@ -20,7 +19,7 @@ def run_bot():
             OFFSET = get_offset(updates)
             create_file(OFFSET_FILE, OFFSET)
         else:
-            time.sleep(1)
+            wait(UPDATE_PERIOD)
 
 if __name__ == "__main__":
     run_bot()

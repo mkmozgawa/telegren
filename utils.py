@@ -1,5 +1,9 @@
 import telegram
 import sys
+import time
+
+UPDATE_PERIOD = 1
+COOLOFF_PERIOD = 60
 
 ''' Util functions used by other files. '''
 
@@ -49,3 +53,6 @@ def process_updates(updates, bot, KEYWORD, REPLY):
 def get_offset(updates):
     ''' Return the offset after processing the most recent messages. +1 so the next query only asks for the messages that haven't been processed yet. '''
     return updates[-1].update_id + 1
+
+def wait(seconds):
+    time.sleep(seconds)
