@@ -34,7 +34,7 @@ def fetch_updates(bot, offset):
     except telegram.error.TimedOut:
         return None
 
-def respond_to_message(update, reply):
+def respond_to_message(update, match, reply):
     message = ' '.join([match, REPLY])
     update.message.reply_text(text=message, quote=True)
 
