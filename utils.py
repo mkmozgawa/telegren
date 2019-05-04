@@ -34,18 +34,33 @@ def fetch_updates(bot, offset):
     except telegram.error.TimedOut:
         return None
 
-def respond_to_message(update, reply):
-    update.message.reply_text(text=reply, quote=True)
+def respond_to_message(update, match, reply):
+    message = ' '.join([match, reply])
+    update.message.reply_text(text=message, quote=True)
 
 def process_updates(updates, bot, KEYWORD, REPLY):
     ''' Process the updates. '''
     for update in updates:
         try:
-            if KEYWORD in update.message.text.lower():
-                respond_to_message(update, REPLY)
+            match = find_matches(update.message.text, KEYWORD)
+            if match is not None:
+                respond_to_message(update, match, REPLY)
         except AttributeError: # raised when it can't process a message (sticker, image, etc)
             continue
 
 def get_offset(updates):
     ''' Return the offset after processing the most recent messages. +1 so the next query only asks for the messages that haven't been processed yet. '''
     return updates[-1].update_id + 1
+
+def find_matches(text, keyword):
+    ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
+    try:
+        arr = text.split(' ')
+        matches = ['"' + el + '"?' for el in arr if keyword in el.lower()]
+        if len(matches) > 0:
+            return ' '.join(matches)
+        else:
+            return None
+    except AttributeError:
+        return None
+
