@@ -35,7 +35,7 @@ def fetch_updates(bot, offset):
         return None
 
 def respond_to_message(update, match, reply):
-    message = ' '.join([match, REPLY])
+    message = ' '.join([match, reply])
     update.message.reply_text(text=message, quote=True)
 
 def process_updates(updates, bot, KEYWORD, REPLY):
