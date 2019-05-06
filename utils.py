@@ -2,6 +2,8 @@ import telegram
 import sys
 import string
 
+EXCLUDED = 'http'
+
 ''' Util functions used by other files. '''
 
 def create_file(filename, value):
@@ -59,7 +61,7 @@ def find_matches(text, keyword):
         translator = str.maketrans('', '', string.punctuation)
         text = text.translate(translator) # remove punctuation
         arr = text.split(' ')
-        matches = ['"' + el + '"?' for el in arr if keyword in el.lower()]
+        matches = ['"' + el + '"?' for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
         matches = list(set(matches))
         if len(matches) > 0:
             return ' '.join(matches)
