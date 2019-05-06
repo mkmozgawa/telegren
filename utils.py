@@ -59,9 +59,9 @@ def find_matches(text, keyword):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
     try:
         translator = str.maketrans('', '', string.punctuation)
-        text = text.translate(translator) # remove punctuation
         arr = text.split(' ')
         matches = ['"' + el + '"?' for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
+        matches = [el.translate(translator) for el in matches]
         matches = list(set(matches))
         if len(matches) > 0:
             return ' '.join(matches)
