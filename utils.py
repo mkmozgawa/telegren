@@ -1,6 +1,7 @@
 import telegram
 import sys
 import string
+import more_itertools
 
 EXCLUDED = 'http'
 
@@ -61,7 +62,7 @@ def find_matches(text, keyword):
         translator = str.maketrans('', '', string.punctuation)
         arr = text.split(' ')
         matches = [el.translate(translator) for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
-        matches = list(set(matches))
+        matches = more_itertools.unique_everseen(matches)
         matches = ['"' + el + '"?' for el in matches ]
         if len(matches) > 0:
             return ' '.join(matches)
