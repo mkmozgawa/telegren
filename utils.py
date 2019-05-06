@@ -1,5 +1,9 @@
 import telegram
 import sys
+import string
+import more_itertools
+
+EXCLUDED = 'http'
 
 ''' Util functions used by other files. '''
 
@@ -55,8 +59,11 @@ def get_offset(updates):
 def find_matches(text, keyword):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
     try:
+        translator = str.maketrans('', '', string.punctuation)
         arr = text.split(' ')
-        matches = ['"' + el + '"?' for el in arr if keyword in el.lower()]
+        matches = [el.translate(translator) for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
+        matches = more_itertools.unique_everseen(matches)
+        matches = ['"' + el + '"?' for el in matches ]
         if len(matches) > 0:
             return ' '.join(matches)
         else:
