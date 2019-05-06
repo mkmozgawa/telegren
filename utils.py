@@ -57,7 +57,7 @@ def find_matches(text, keyword):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
     try:
         translator = str.maketrans('', '', string.punctuation)
-        text = s.translate(translator) # remove punctuation
+        text = text.translate(translator) # remove punctuation
         arr = text.split(' ')
         matches = ['"' + el + '"?' for el in arr if keyword in el.lower()]
         matches = list(set(matches))
