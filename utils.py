@@ -1,5 +1,6 @@
 import telegram
 import sys
+import string
 
 ''' Util functions used by other files. '''
 
@@ -55,8 +56,11 @@ def get_offset(updates):
 def find_matches(text, keyword):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
     try:
+        translator = str.maketrans('', '', string.punctuation)
+        text = s.translate(translator) # remove punctuation
         arr = text.split(' ')
         matches = ['"' + el + '"?' for el in arr if keyword in el.lower()]
+        matches = list(set(matches))
         if len(matches) > 0:
             return ' '.join(matches)
         else:
