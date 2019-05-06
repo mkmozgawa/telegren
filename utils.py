@@ -60,9 +60,9 @@ def find_matches(text, keyword):
     try:
         translator = str.maketrans('', '', string.punctuation)
         arr = text.split(' ')
-        matches = ['"' + el + '"?' for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
-        matches = [el.translate(translator) for el in matches]
+        matches = [el.translate(translator) for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
         matches = list(set(matches))
+        matches = ['"' + el + '"?' for el in matches ]
         if len(matches) > 0:
             return ' '.join(matches)
         else:
