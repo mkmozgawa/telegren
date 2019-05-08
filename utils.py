@@ -2,8 +2,10 @@ import telegram
 import sys
 import string
 import more_itertools
+import datetime
 
 EXCLUDED = 'http'
+POLLING_LIMIT = 120 # handling time sucks
 
 ''' Util functions used by other files. '''
 
@@ -45,16 +47,21 @@ def respond_to_message(update, match, reply):
 def process_updates(updates, bot, KEYWORD, REPLY):
     ''' Process the updates. '''
     for update in updates:
-        try:
-            match = find_matches(update.message.text, KEYWORD)
-            if match is not None:
-                respond_to_message(update, match, REPLY)
-        except AttributeError: # raised when it can't process a message (sticker, image, etc)
-            continue
+        if message_newer_than_polling_limit(update.message.date):
+            try:
+                match = find_matches(update.message.text, KEYWORD)
+                if match is not None:
+                    respond_to_message(update, match, REPLY)
+            except AttributeError: # raised when it can't process a message (sticker, image, etc)
+                continue
 
 def get_offset(updates):
     ''' Return the offset after processing the most recent messages. +1 so the next query only asks for the messages that haven't been processed yet. '''
     return updates[-1].update_id + 1
+
+def message_newer_than_polling_limit(message_time):
+    poll_diff = (datetime.datetime.now() - message_time).seconds
+    return poll_diff < POLLING_LIMIT
 
 def find_matches(text, keyword):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
