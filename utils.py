@@ -47,13 +47,13 @@ def respond_to_message(update, match, reply):
 def process_updates(updates, bot, KEYWORD, REPLY):
     ''' Process the updates. '''
     for update in updates:
-        if message_newer_than_polling_limit(update.message.date):
-            try:
+        try:
+            if message_newer_than_polling_limit(update.message.date):
                 match = find_matches(update.message.text, KEYWORD)
                 if match is not None:
                     respond_to_message(update, match, REPLY)
-            except AttributeError: # raised when it can't process a message (sticker, image, etc)
-                continue
+        except AttributeError: # raised when it can't process a message (sticker, image, etc)
+            continue
 
 def get_offset(updates):
     ''' Return the offset after processing the most recent messages. +1 so the next query only asks for the messages that haven't been processed yet. '''
