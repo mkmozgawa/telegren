@@ -4,7 +4,7 @@ import string
 import more_itertools
 import datetime
 
-EXCLUDED = 'http'
+EXCLUDED_HTTP = 'http'
 POLLING_LIMIT = 120 # handling time sucks
 
 ''' Util functions used by other files. '''
@@ -12,14 +12,20 @@ POLLING_LIMIT = 120 # handling time sucks
 def create_file(filename, value):
     with open(filename, 'w') as f:
         try:
-            f.write(value)
+            f.writelines(value)
         except TypeError:
             f.write(str(value))
 
 def read_file(filename):
-    with open(filename, 'r') as f:
-        content = f.read().strip()
-    return content
+    try:
+        with open(filename, 'r') as f:
+            content = f.readlines()
+        content = [line.strip() for line in content]
+        if len(content) == 1:
+            return content[0]
+        return content
+    except FileNotFoundError:
+        return None
 
 def create_bot(token):
     ''' Return a bot instance. '''
@@ -44,12 +50,12 @@ def respond_to_message(update, match, reply):
     message = ' '.join([match, reply])
     update.message.reply_text(text=message, quote=True)
 
-def process_updates(updates, bot, KEYWORD, REPLY):
+def process_updates(updates, bot, KEYWORD, REPLY, exclusion_list):
     ''' Process the updates. '''
     for update in updates:
         try:
             if message_newer_than_polling_limit(update.message.date):
-                match = find_matches(update.message.text, KEYWORD)
+                match = find_matches(update.message.text, KEYWORD, exclusion_list)
                 if match is not None:
                     respond_to_message(update, match, REPLY)
         except AttributeError: # raised when it can't process a message (sticker, image, etc)
@@ -63,13 +69,15 @@ def message_newer_than_polling_limit(message_time):
     poll_diff = (datetime.datetime.now() - message_time).seconds
     return poll_diff < POLLING_LIMIT
 
-def find_matches(text, keyword):
+def find_matches(text, keyword, exclusion_list=None):
     ''' Find the matching elements in the text, if any, and return them as a string of quotes with question marks. '''
     try:
         translator = str.maketrans('', '', string.punctuation)
         arr = text.split(' ')
-        matches = [el.translate(translator) for el in arr if keyword in el.lower() and EXCLUDED not in el.lower()]
+        matches = [el.translate(translator) for el in arr if keyword in el.lower() and EXCLUDED_HTTP not in el.lower()]
         matches = more_itertools.unique_everseen(matches)
+        if exclusion_list is not None:
+            matches = [el for el in matches if el not in exclusion_list]
         matches = ['"' + el + '"?' for el in matches ]
         if len(matches) > 0:
             return ' '.join(matches)

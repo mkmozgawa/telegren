@@ -2,6 +2,7 @@ keyword.txt
 reply.txt
 token.txt
 offset.txt
+excluded.txt
 venv/
 .vscode/
 __pycache__/
