@@ -4,6 +4,7 @@ TOKEN_FILE = "token.txt"
 KEYWORD_FILE = "keyword.txt"
 REPLY_FILE = "reply.txt"
 OFFSET_FILE = "offset.txt"
+EXCLUSION_FILE = 'excluded.txt'
 OFFSET_VALUE_INITIAL = "0"
 
 ''' This file contains the setup script'''
