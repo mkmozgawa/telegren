@@ -12,7 +12,7 @@ POLLING_LIMIT = 120 # handling time sucks
 def create_file(filename, value):
     with open(filename, 'w') as f:
         try:
-            f.write(value)
+            f.writelines(value)
         except TypeError:
             f.write(str(value))
 
